@@ -111,7 +111,7 @@ export default function Login() {
             </div>
             <button
               type="submit"
-              className="w-full bg-indigo-500 font-semibold text-white py-2 rounded-md"
+              className="w-full bg-blue-500 font-semibold text-white py-2 rounded-md"
             >Login
             </button>
           </form>
