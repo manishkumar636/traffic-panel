@@ -7,7 +7,6 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// A simple loader component
 const Loader = () => (
   <div className="flex justify-center items-center">
     <div className="loader"></div>
@@ -87,7 +86,7 @@ export default function Login() {
                 name="username"
                 value={formData.username}
                 onChange={handleLoginChange}
-                className="w-full text-sm px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full text-sm px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter your username"
               />
             </div>
@@ -98,7 +97,7 @@ export default function Login() {
                 name="password"
                 value={formData.password}
                 onChange={handleLoginChange}
-                className="w-full text-sm px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 pr-10"
+                className="w-full text-sm px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
                 placeholder="Enter your password"
               />
               <button
