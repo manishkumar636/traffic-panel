@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useState } from "react";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 
@@ -30,12 +30,10 @@ export default function Admindash() {
             Add
           </button>
         </div>
-
-        {/* Table */}
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border border-gray-200">
             <thead>
-              <tr>
+              <tr className="text-sm">
                 <th className="px-4 py-2 border-b text-left">ID</th>
                 <th className="px-4 py-2 border-b text-left">Name</th>
                 <th className="px-4 py-2 border-b text-left">Email</th>
@@ -44,30 +42,30 @@ export default function Admindash() {
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr className="text-xs">
                 <td className="px-4 py-2 border-b">1</td>
                 <td className="px-4 py-2 border-b">John Doe</td>
                 <td className="px-4 py-2 border-b">johndoe@example.com</td>
                 <td className="px-4 py-2 border-b">Client</td>
                 <td className="px-4 py-2 border-b">
-                  <button className="bg-green-500 text-white py-1 px-2 rounded hover:bg-green-600 mr-2">
+                  <button className="bg-green-500 text-xs text-white py-1 px-2 rounded hover:bg-green-600 mr-2">
                     Edit
                   </button>
-                  <button className="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600">
+                  <button className="bg-red-500 text-xs text-white py-1 px-2 rounded hover:bg-red-600">
                     Delete
                   </button>
                 </td>
               </tr>
-              <tr>
+              <tr className="text-xs">
                 <td className="px-4 py-2 border-b">2</td>
                 <td className="px-4 py-2 border-b">Jane Smith</td>
                 <td className="px-4 py-2 border-b">janesmith@example.com</td>
                 <td className="px-4 py-2 border-b">Client</td>
                 <td className="px-4 py-2 border-b">
-                  <button className="bg-green-500 text-white py-1 px-2 rounded hover:bg-green-600 mr-2">
+                  <button className="bg-green-500 text-xs text-white py-1 px-2 rounded hover:bg-green-600 mr-2">
                     Edit
                   </button>
-                  <button className="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600">
+                  <button className="bg-red-500 text-xs text-white py-1 px-2 rounded hover:bg-red-600">
                     Delete
                   </button>
                 </td>
@@ -91,7 +89,7 @@ export default function Admindash() {
                   placeholder="Enter email"
                 />
               </div>
-              
+
               {/* Password field with eye icon toggle */}
               <div className="space-y-1 mt-4 relative">
                 <label className="block text-gray-700 text-sm">Password</label>
@@ -105,10 +103,10 @@ export default function Admindash() {
                   onClick={togglePasswordVisibility}
                   className="absolute right-2 top-7 text-gray-600"
                 >
-                  {showPassword ? <FaEyeSlash/> : <FaEye/>}
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
-              
+
               <div className="flex justify-end mt-5">
                 <button
                   type="button"
