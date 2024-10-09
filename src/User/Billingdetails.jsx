@@ -40,18 +40,30 @@ export default function Billingdetails() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (loading) return; // Prevent further clicks if already loading
+        if (loading) return; 
         setLoading(true);
-
+    
         const { file, campaignName, text, sender } = formData;
-
+    
         if (!file || !campaignName || !text || !sender) {
             alert('Please fill in all fields and select a file.');
+            setLoading(false); // Ensure loading is reset on error
             return;
         }
-
+    
+        // Retrieve the token from cookies
+        const token = Cookies.get('token');
+        // Check user role (this assumes you have a way to determine the user's role)
+        const role = Cookies.get('role'); // Assuming you also store the role in cookies
+    
+        if (role !== 'user') {
+            alert("You don't have permission to send SMS.");
+            setLoading(false); // Ensure loading is reset on error
+            return;
+        }
+    
         try {
-            const response = await sendSMS(file, campaignName, text, sender);
+            const response = await sendSMS(file, campaignName, text, sender, token);
             alert('SMS sent successfully:', response);
             setFormData({
                 file: null,
@@ -66,8 +78,7 @@ export default function Billingdetails() {
         } catch (error) {
             console.error('Failed to send SMS:', error);
             alert('Failed to send SMS');
-        }
-        finally {
+        } finally {
             setLoading(false);
         }
     };
