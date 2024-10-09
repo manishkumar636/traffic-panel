@@ -23,7 +23,7 @@ export default function Admindash() {
           <div></div>
           <button
             onClick={openModal}
-            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 ml-auto text-xs"
+            className="bg-black text-white py-2 px-4 rounded hover:bg-blue-600 ml-auto text-xs"
           >
             Add
           </button>
