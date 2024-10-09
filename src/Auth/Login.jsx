@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unknown-property */
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { loginUser } from "../Service/auth.service";
 import { Helmet } from "react-helmet";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -132,14 +132,6 @@ export default function Login() {
             </button>
           </form>
           <div className="mt-4">{loading && <Loader />}</div>
-          <div className="mt-4 text-center">
-            <p className="text-sm">
-              Dont have an account?{" "}
-              <Link to="/create-account" className="text-blue-500 underline">
-                Create Account
-              </Link>
-            </p>
-          </div>
         </div>
       </div>
 
