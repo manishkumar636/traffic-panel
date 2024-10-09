@@ -5,14 +5,8 @@ import { FaEyeSlash } from "react-icons/fa";
 export default function Admindash() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
-  // Function to open the modal
   const openModal = () => setIsModalOpen(true);
-
-  // Function to close the modal
   const closeModal = () => setIsModalOpen(false);
-
-  // Function to toggle password visibility
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   return (
@@ -73,7 +67,6 @@ export default function Admindash() {
         </div>
       </div>
 
-      {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded shadow-lg w-96">
