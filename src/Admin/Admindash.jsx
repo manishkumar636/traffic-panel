@@ -88,7 +88,6 @@ export default function Admindash() {
                 />
               </div>
 
-              {/* Password field with eye icon toggle */}
               <div className="space-y-1 mt-4 relative">
                 <label className="block text-gray-700 text-sm">Password</label>
                 <input
