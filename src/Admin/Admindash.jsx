@@ -19,8 +19,6 @@ export default function Admindash() {
     <Fragment>
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
-
-        {/* Add Button on the right */}
         <div className="mb-4 flex justify-between">
           <div></div>
           <button
@@ -79,7 +77,7 @@ export default function Admindash() {
       {isModalOpen && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded shadow-lg w-96">
-            <h2 className="text-xl font-bold mb-4">Add New Item</h2>
+            <h2 className="text-xl font-bold mb-4">Add New User</h2>
             <form>
               <div className="space-y-1">
                 <label className="block text-gray-700 text-sm">Email</label>
