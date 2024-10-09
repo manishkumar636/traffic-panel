@@ -14,7 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/admindash" element={<Admindash />} />
-          <Route path="/billingdetails" exact element={<Billingdetails />} />
+          <Route path="/userdetails" exact element={<Billingdetails />} />
         </Routes>
       </BrowserRouter>
     </Fragment>

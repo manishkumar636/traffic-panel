@@ -1,115 +1,274 @@
-import { Fragment, useState } from "react";
-import { FaEye } from "react-icons/fa";
-import { FaEyeSlash } from "react-icons/fa";
+import { Fragment, useState, useEffect } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { addUsers, getUsersByAdmin } from "@/Service/auth.service";
+import Cookies from 'js-cookie';
+import { useNavigate } from "react-router-dom";
 
 export default function Admindash() {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
+  const [users, setUsers] = useState([]);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    company: "",
+    username: "",
+    password: "",
+    loginPassword: "",
+  });
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setConfirmPasswordVisible(!confirmPasswordVisible);
+  };
+
+  const handleCreateAccount = async (e) => {
+    e.preventDefault();
+
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.company ||
+      !formData.username ||
+      !formData.password ||
+      !formData.loginPassword
+    ) {
+      alert("All fields are required.");
+      return;
+    }
+
+    if (formData.password !== formData.loginPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+
+    const response = await addUsers(formData);
+    if (response) {
+      alert(response.message);
+      closeModal(); // Close modal after successful user addition
+      setFormData({
+        name: "",
+        email: "",
+        company: "",
+        username: "",
+        password: "",
+        loginPassword: "",
+      }); // Reset form data
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const userData = await getUsersByAdmin();
+        setUsers(userData);
+      } catch (error) {
+        console.error("Error fetching users:", error.message);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  const handleLogoutUser = () => {
+    Cookies.remove("token");
+    Cookies.remove("role");
+    navigate("/");
+  };
 
   return (
     <Fragment>
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
         <div className="mb-4 flex justify-between">
-          <div></div>
-          <button
-            onClick={openModal}
-            className="bg-black text-white py-2 px-4 rounded hover:bg-blue-600 ml-auto text-xs"
-          >
-            Add
-          </button>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={openModal}
+              className="bg-black text-white py-2 px-4 rounded hover:bg-blue-600 ml-auto text-xs"
+            >
+              Add
+            </button>
+            <button
+              onClick={handleLogoutUser}
+              className="bg-black text-white py-2 px-4 rounded hover:bg-blue-600 ml-auto text-xs"
+            >
+              Logout
+            </button>
+          </div>
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border border-gray-200">
             <thead>
               <tr className="text-sm">
                 <th className="px-4 py-2 border-b text-left">ID</th>
+                <th className="px-4 py-2 border-b text-left">User ID</th>
                 <th className="px-4 py-2 border-b text-left">Name</th>
                 <th className="px-4 py-2 border-b text-left">Email</th>
+                <th className="px-4 py-2 border-b text-left">Company</th>
                 <th className="px-4 py-2 border-b text-left">Role</th>
-                <th className="px-4 py-2 border-b text-left">Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr className="text-xs">
-                <td className="px-4 py-2 border-b">1</td>
-                <td className="px-4 py-2 border-b">John Doe</td>
-                <td className="px-4 py-2 border-b">johndoe@example.com</td>
-                <td className="px-4 py-2 border-b">Client</td>
-                <td className="px-4 py-2 border-b">
-                  <button className="bg-green-500 text-xs text-white py-1 px-2 rounded hover:bg-green-600 mr-2">
-                    Edit
-                  </button>
-                  <button className="bg-red-500 text-xs text-white py-1 px-2 rounded hover:bg-red-600">
-                    Delete
-                  </button>
-                </td>
-              </tr>
-              <tr className="text-xs">
-                <td className="px-4 py-2 border-b">2</td>
-                <td className="px-4 py-2 border-b">Jane Smith</td>
-                <td className="px-4 py-2 border-b">janesmith@example.com</td>
-                <td className="px-4 py-2 border-b">Client</td>
-                <td className="px-4 py-2 border-b">
-                  <button className="bg-green-500 text-xs text-white py-1 px-2 rounded hover:bg-green-600 mr-2">
-                    Edit
-                  </button>
-                  <button className="bg-red-500 text-xs text-white py-1 px-2 rounded hover:bg-red-600">
-                    Delete
-                  </button>
-                </td>
-              </tr>
+              {users.map((user, index) => (
+                <tr className="text-xs" key={user._id}>
+                  <td className="px-4 py-2 border-b">{index + 1}</td>
+                  <td className="px-4 py-2 border-b">{user._id}</td>
+                  <td className="px-4 py-2 border-b">{user.name}</td>
+                  <td className="px-4 py-2 border-b">{user.email}</td>
+                  <td className="px-4 py-2 border-b">{user.company}</td>
+                  <td className="px-4 py-2 border-b">{user.role}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded shadow-lg w-96">
+        <div
+          className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center"
+          onClick={closeModal} // Close modal on overlay click
+        >
+          <div
+            className="bg-white p-6 rounded shadow-lg w-96"
+            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
+          >
             <h2 className="text-xl font-bold mb-4">Add New User</h2>
-            <form>
-              <div className="space-y-1">
-                <label className="block text-gray-700 text-sm">Email</label>
+            <form onSubmit={handleCreateAccount}>
+              <div className="mb-3">
+                <label
+                  htmlFor="username"
+                  className="block text-gray-700 font-medium mb-2 text-xs"
+                >
+                  Name
+                </label>
                 <input
-                  type="email"
-                  className="w-full px-4 py-2 border rounded text-xs"
-                  placeholder="Enter email"
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-full text-sm px-1 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
                 />
               </div>
-
-              <div className="space-y-1 mt-4 relative">
-                <label className="block text-gray-700 text-sm">Password</label>
+              <div className="mb-3">
+                <label
+                  htmlFor="username"
+                  className="block text-gray-700 font-medium mb-2 text-xs"
+                >
+                  Email
+                </label>
                 <input
-                  type={showPassword ? "text" : "password"}
-                  className="w-full px-4 py-2 border rounded text-xs"
-                  placeholder="Enter password"
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full text-sm px-1 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                />
+              </div>
+              <div className="mb-3">
+                <label
+                  htmlFor="username"
+                  className="block text-gray-700 font-medium mb-2 text-xs"
+                >
+                  Company
+                </label>
+                <input
+                  type="text"
+                  name="company"
+                  value={formData.company}
+                  onChange={handleChange}
+                  className="w-full text-sm px-1 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                />
+              </div>
+              <div className="mb-3">
+                <label
+                  htmlFor="username"
+                  className="block text-gray-700 font-medium mb-2 text-xs"
+                >
+                  Username
+                </label>
+                <input
+                  type="text"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  className="w-full text-sm px-1 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                />
+              </div>
+              <div className="mb-4 relative">
+                <label
+                  htmlFor="password"
+                  className="block text-gray-700 font-medium mb-2 text-xs"
+                >
+                  Password
+                </label>
+                <input
+                  type={passwordVisible ? "text" : "password"}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="w-full text-sm px-1 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
                 />
                 <button
                   type="button"
                   onClick={togglePasswordVisibility}
-                  className="absolute right-2 top-7 text-gray-600"
+                  className="absolute inset-y-0 right-0 top-6 px-3 flex items-center text-gray-700"
                 >
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+              <div className="mb-6 relative">
+                <label
+                  htmlFor="loginPassword"
+                  className="block text-gray-700 font-medium mb-2 text-xs"
+                >
+                  Login Password
+                </label>
+                <input
+                  type={confirmPasswordVisible ? "text" : "password"}
+                  name="loginPassword"
+                  value={formData.loginPassword}
+                  onChange={handleChange}
+                  className="w-full text-sm px-1 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={toggleConfirmPasswordVisibility}
+                  className="absolute inset-y-0 right-0 top-6 px-3 flex items-center text-gray-700"
+                >
+                  {confirmPasswordVisible ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
 
-              <div className="flex justify-end mt-5">
+              <div className="flex justify-between items-center gap-5">
+                <button
+                  type="submit"
+                  className="w-full bg-blue-500 font-semibold text-white py-2 rounded-md text-xs"
+                >
+                  Create Account
+                </button>
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="bg-gray-500 text-xs text-white py-2 px-4 rounded hover:bg-gray-600 mr-2"
+                  className="w-full bg-gray-300 font-semibold text-gray-700 py-2 rounded-md text-xs"
                 >
                   Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="bg-blue-500 text-xs text-white py-2 px-4 rounded hover:bg-blue-600"
-                >
-                  Submit
                 </button>
               </div>
             </form>

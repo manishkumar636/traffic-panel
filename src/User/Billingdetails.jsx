@@ -75,6 +75,7 @@ export default function Billingdetails() {
     const handleLogoutUser = () => {
         // Ensure all relevant cookies are cleared
         Cookies.remove('token');
+        Cookies.remove('role');
         navigate('/');
     };
 
