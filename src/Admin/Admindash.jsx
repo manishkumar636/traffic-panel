@@ -44,12 +44,7 @@ export default function Admindash() {
       alert("All fields are required.");
       return;
     }
-
-    if (formData.password !== formData.loginPassword) {
-      alert("Passwords do not match.");
-      return;
-    }
-
+    
     const response = await addUsers(formData);
     if (response) {
       alert(response.message);
