@@ -53,7 +53,7 @@ export default function Admindash() {
     const response = await addUsers(formData);
     if (response) {
       alert(response.message);
-      closeModal(); // Close modal after successful user addition
+      closeModal();
       setFormData({
         name: "",
         email: "",
@@ -173,6 +173,7 @@ export default function Admindash() {
                 >
                   Email
                 </label>
+                <p className="text-xs mt-2 mb-2 text-gray-500">The email should be unique</p>
                 <input
                   type="email"
                   name="email"
