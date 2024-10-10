@@ -9,7 +9,7 @@ const Loader = () => (
     </div>
 );
 
-export default function Billingdetails() {
+export default function Userdetails() {
     const navigate = useNavigate();
     const fileInputRef = useRef(null);
     const [formData, setFormData] = useState({
@@ -47,18 +47,16 @@ export default function Billingdetails() {
     
         if (!file || !campaignName || !text || !sender) {
             alert('Please fill in all fields and select a file.');
-            setLoading(false); // Ensure loading is reset on error
+            setLoading(false);
             return;
         }
     
-        // Retrieve the token from cookies
+
         const token = Cookies.get('token');
-        // Check user role (this assumes you have a way to determine the user's role)
-        const role = Cookies.get('role'); // Assuming you also store the role in cookies
-    
+        const role = Cookies.get('role'); 
         if (role !== 'user') {
             alert("You don't have permission to send SMS.");
-            setLoading(false); // Ensure loading is reset on error
+            setLoading(false);
             return;
         }
     
@@ -83,7 +81,6 @@ export default function Billingdetails() {
     };
 
     const handleLogoutUser = () => {
-        // Ensure all relevant cookies are cleared
         Cookies.remove('token');
         Cookies.remove('role');
         navigate('/');

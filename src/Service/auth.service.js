@@ -34,7 +34,8 @@ export const addUsers = async (formData) => {
   }
 };
 
-export const sendSMS = async (file, campaignName, text, sender) => {
+
+export const sendSMS = async (file, campaignName, text, sender, token) => {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("campaignName", campaignName);
@@ -45,6 +46,7 @@ export const sendSMS = async (file, campaignName, text, sender) => {
     const response = await axios.post(`${API_URL}/api/send-sms`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
+        "Authorization": `Bearer ${token}`, 
       },
     });
     return response.data;
@@ -53,7 +55,6 @@ export const sendSMS = async (file, campaignName, text, sender) => {
     throw error;
   }
 };
-
 
 export const getUsersByAdmin = async () => {
     const role = Cookies.get("role"); 
