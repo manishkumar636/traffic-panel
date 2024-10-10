@@ -262,7 +262,7 @@ export default function Admindash() {
                   type="submit"
                   className="w-full bg-blue-500 font-semibold text-white py-2 rounded-md text-xs"
                 >
-                  Create Account
+                  Add New User
                 </button>
                 <button
                   type="button"
